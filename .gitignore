@@ -17,3 +17,5 @@ gradle-app.setting
 
 # Log file
 *.log
+
+gradle.properties
