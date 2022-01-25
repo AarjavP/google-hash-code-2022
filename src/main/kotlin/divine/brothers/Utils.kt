@@ -46,7 +46,23 @@ fun <T> MutableMap<T, Int>.increment(key: T) {
     merge(key, 1, Int::plus)
 }
 
-
 fun <T> Set<T>.containsAny(iterable: Iterable<T>): Boolean {
     return iterable.any { it in this }
 }
+
+fun <T, E> Sequence<T>.takeUntilChanged(selector: T.() -> E): Sequence<T> = sequence {
+    val iterator = iterator()
+    if (!iterator.hasNext()) {
+        return@sequence
+    }
+    val first = iterator.next()
+    val firstValue = first.selector()
+    yield(first)
+    while (iterator().hasNext()) {
+        val next = iterator.next()
+        if (firstValue == next) {
+            yield(next)
+        } else break
+    }
+}
+
